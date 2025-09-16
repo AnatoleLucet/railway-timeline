@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(250, 24%, 9%);
+  --color-background-secondary: hsl(250, 21%, 11%);
+  --color-foreground: hsl(0, 0%, 100%);
+
+  --color-gray-50: hsl(248, 21%, 13%);
+  --color-gray-100: hsl(246, 18%, 15%);
+  --color-gray-200: hsl(246, 11%, 22%);
+  --color-gray-300: hsl(246, 8%, 35%);
+  --color-gray-500: hsl(246, 6%, 55%);
+  --color-gray-600: hsl(246, 6%, 65%);
+  --color-gray-950: hsl(246, 4%, 97%);
+
+  --color-ping-50: hsl(270, 38%, 12%);
+  --color-pink-100: hsl(270, 40%, 16%);
+  --color-pink-200: hsl(270, 45%, 24%);
+  --color-pink-500: hsl(270, 60%, 52%);
+  --color-pink-700: hsl(270, 70%, 75%);
+
+  --color-blue-50: hsl(220, 55%, 10%);
+  --color-blue-200: hsl(220, 62%, 25%);
+  --color-blue-500: hsl(220, 80%, 55%);
+  --color-blue-700: hsl(220, 80%, 75%);
+
+  --color-green-50: hsl(152, 15%, 10%);
+  --color-green-200: hsl(152, 32%, 16%);
+  --color-green-500: hsl(152, 38%, 42%);
+  --color-green-700: hsl(152, 38%, 70%);
+
+  --color-red-50: hsl(1, 35%, 10%);
+  --color-red-200: hsl(1, 55%, 20%);
+  --color-red-500: hsl(1, 62%, 44%);
+  --color-red-700: hsl(1, 62%, 76%);
+
+  --color-yellow-50: hsl(44, 40%, 08%);
+  --color-yellow-200: hsl(44, 50%, 16%);
+  --color-yellow-500: hsl(44, 74%, 52%);
+  --color-yellow-700: hsl(44, 78%, 72%);
+
+  --color-cyan-50: hsl(180, 25%, 10%);
+  --color-cyan-200: hsl(180, 45%, 16%);
+  --color-cyan-500: hsl(180, 50%, 44%);
+  --color-cyan-700: hsl(180, 50%, 72%);
+
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  @apply bg-[var(--color-background)] text-[var(--color-gray-950)] font-[var(--font-sans)];
+}
