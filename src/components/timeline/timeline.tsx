@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import clsx from "clsx";
 
 import { TimelineContext, useTimelineContext } from "./context";
@@ -14,7 +14,7 @@ import {
   type TimelineCtx,
   type TimelineRef,
 } from "./types";
-import { cull, scale } from "./lib";
+import { cull, scale, zoom } from "./lib";
 
 type ItemProps = {
   range: TimeRange;
@@ -32,6 +32,12 @@ type RootProps = {
   options: Partial<TimelineConfig> & {
     /** The scrollable range of the timeline */
     range: TimeRange;
+
+    /** Initial viewport range, defaults to the full range */
+    initialViewport?: {
+      start: Date;
+      end: Date;
+    };
   };
 
   className?: string;
@@ -119,6 +125,11 @@ const Root = React.forwardRef<TimelineRef, RootProps>(
       options.pixelsPerDay,
       options.zoomSensitivity,
     ]);
+
+    // set initial viewport
+    useLayoutEffect(() => {
+      actions.jumpTo(options.initialViewport ?? options.range);
+    }, []);
 
     return (
       <TimelineContext.Provider value={ctx}>

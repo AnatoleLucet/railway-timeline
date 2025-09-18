@@ -2,6 +2,7 @@ import React from "react";
 import { useGesture, useWheel } from "@use-gesture/react";
 import { scroll, zoom } from "./lib";
 import type { TimelineCtx, TimelineRef } from "./types";
+import { TimeRange } from "~/lib/time";
 
 export const useTimeline = () => {
   return React.useRef<TimelineRef>(null);
@@ -41,6 +42,22 @@ export const useTimelineActions = (ctx: TimelineCtx) => {
             scrollOffset,
           };
         });
+      },
+      [ctx.update],
+    ),
+
+    jumpTo: React.useCallback(
+      (range: TimeRange) => {
+        const viewport = ctx.elem.current?.getBoundingClientRect();
+        if (!viewport) return;
+
+        const { scrollOffset, zoomFactor } = zoom.to(ctx, range, viewport);
+
+        ctx.update((c) => ({
+          ...c,
+          scrollOffset,
+          zoomFactor,
+        }));
       },
       [ctx.update],
     ),

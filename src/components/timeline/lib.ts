@@ -101,6 +101,27 @@ export const zoom = {
       scrollOffset,
     };
   },
+  to: (ctx: TimelineCtx, range: TimeRange, viewport: TimelineViewport) => {
+    const rangeWidth = scale.rangeWidth(ctx, range, 1);
+    const zoomFactor = zoom.clamp(ctx, viewport.width / rangeWidth, viewport);
+
+    const msWidth = scale.msWidth(ctx, zoomFactor);
+    const itemStart =
+      (range.start.getTime() - ctx.range.start.getTime()) * msWidth;
+    const itemEnd = (range.end.getTime() - ctx.range.start.getTime()) * msWidth;
+    const itemCenter = (itemStart + itemEnd) / 2;
+
+    const scrollOffset = scroll.clamp(
+      { ...ctx, zoomFactor },
+      itemCenter - viewport.width / 2,
+      viewport,
+    );
+
+    return {
+      zoomFactor,
+      scrollOffset,
+    };
+  },
   clamp: (ctx: TimelineCtx, zoom: number, viewport: TimelineViewport) => {
     const baseContentWidth = scale.rangeWidth(ctx, ctx.range, 1);
     const minZoom = viewport.width / baseContentWidth;

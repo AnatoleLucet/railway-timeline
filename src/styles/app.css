@@ -11,6 +11,7 @@
   --color-gray-100: hsl(246, 18%, 15%);
   --color-gray-200: hsl(246, 11%, 22%);
   --color-gray-300: hsl(246, 8%, 35%);
+  --color-gray-400: hsl(246, 7%, 45%);
   --color-gray-500: hsl(246, 6%, 55%);
   --color-gray-600: hsl(246, 6%, 65%);
   --color-gray-950: hsl(246, 4%, 97%);
@@ -18,7 +19,10 @@
   --color-ping-50: hsl(270, 38%, 12%);
   --color-pink-100: hsl(270, 40%, 16%);
   --color-pink-200: hsl(270, 45%, 24%);
+  --color-pink-300: hsl(270, 50%, 32%);
+  --color-pink-400: hsl(270, 55%, 43%);
   --color-pink-500: hsl(270, 60%, 52%);
+  --color-pink-600: hsl(270, 70%, 65%);
   --color-pink-700: hsl(270, 70%, 75%);
 
   --color-blue-50: hsl(220, 55%, 10%);
@@ -47,8 +51,4 @@
   --color-cyan-700: hsl(180, 50%, 72%);
 
   --font-sans: "Inter", sans-serif;
-}
-
-body {
-  @apply bg-[var(--color-background)] text-[var(--color-gray-950)] font-[var(--font-sans)];
 }

@@ -1,109 +1,80 @@
 import { Timeline } from "../../components/timeline";
 import { TimelineBackground } from "./background";
-import { Service } from "./service";
-import { Deployment } from "./deployment";
 import { Sidebar } from "./sidebar";
+import clsx from "clsx";
+import { TimelineForm, TimelineFormData } from "./form";
+import React from "react";
+import { Services } from "./services";
+import dayjs from "dayjs";
+import { useEnvironment } from "./hooks";
 
-const Services = () => {
+type EnvironmentTimelineProps = {
+  className?: string;
+};
+
+type TimelineViewportProps = TimelineFormData;
+
+const TimelineViewport = ({
+  apiKey,
+  projectId,
+  environmentId,
+}: TimelineViewportProps) => {
+  const timeline = Timeline.use();
+
+  const environment = useEnvironment({ apiKey, environmentId });
+
+  const envCreatedAt =
+    environment.data?.createdAt || dayjs().subtract(3, "day").toISOString();
+  const envDeletedAt = environment.data?.deletedAt || dayjs().toISOString();
+
+  const range = {
+    start: new Date(envCreatedAt),
+    end: new Date(envDeletedAt),
+  };
+
+  const initialViewport = {
+    start: dayjs(range.end).subtract(1.5, "day").toDate(),
+    end: range.end,
+  };
+
   return (
-    <div className="my-4">
-      <Service name="Service A">
-        <Deployment
-          status="active"
-          range={{
-            start: new Date("2023-01-04"),
-            end: new Date("2023-01-07"),
-          }}
-        >
-          Item 1
-        </Deployment>
+    <div className="w-full h-full bg-background-secondary rounded-xl border border-gray-200 flex">
+      <Sidebar apiKey={apiKey} projectId={projectId} />
 
-        <Deployment
-          status="deploying"
-          range={{
-            start: new Date("2023-01-09"),
-            end: new Date("2023-01-16"),
-          }}
-        >
-          Item 2
-        </Deployment>
+      <Timeline.Root
+        key={environment.data?.id} // reset timeline when environment changes to reset initial viewport etc
+        ref={timeline}
+        options={{
+          range,
+          initialViewport,
+        }}
+        className="w-full h-full"
+      >
+        <TimelineBackground />
 
-        <Deployment
-          status="completed"
-          range={{
-            start: new Date("2023-02-01"),
-            end: new Date("2023-02-10"),
-          }}
-        >
-          Item 5
-        </Deployment>
-      </Service>
-
-      <Service name="Service B">
-        <Deployment
-          status="failed"
-          range={{
-            start: new Date("2023-01-03"),
-            end: new Date("2023-01-05"),
-          }}
-        >
-          Item 3
-        </Deployment>
-
-        <Deployment
-          status="pending"
-          range={{
-            start: new Date("2023-01-08"),
-            end: new Date("2023-01-13"),
-          }}
-        >
-          Item 4
-        </Deployment>
-
-        <Deployment
-          status="sleeping"
-          range={{
-            start: new Date("2023-03-01"),
-            end: new Date("2023-03-20"),
-          }}
-        >
-          Item 6
-        </Deployment>
-      </Service>
+        <Services
+          apiKey={apiKey}
+          projectId={projectId}
+          environmentId={environmentId}
+        />
+      </Timeline.Root>
     </div>
   );
 };
 
-export const EnvironmentTimeline = () => {
-  const timeline = Timeline.use();
-
-  const range = {
-    start: new Date("2000-01-01"),
-    end: new Date("2024-04-17"),
-  };
+export const EnvironmentTimeline = ({
+  className,
+}: EnvironmentTimelineProps) => {
+  const [formData, setFormData] = React.useState<TimelineFormData>({
+    apiKey: "",
+    projectId: "",
+    environmentId: "",
+  });
 
   return (
-    <div className="p-4">
-      <button onClick={() => timeline.current?.scroll(100)}>
-        scroll right
-      </button>
-      <br />
-      <button onClick={() => timeline.current?.scroll(-100)}>
-        scroll left
-      </button>
-
-      <div className="h-[600px] w-full bg-background-secondary rounded-xl border border-gray-200 flex">
-        <Sidebar />
-
-        <Timeline.Root
-          ref={timeline}
-          options={{ range }}
-          className="w-full h-full"
-        >
-          <TimelineBackground />
-          <Services />
-        </Timeline.Root>
-      </div>
+    <div className={clsx("h-full p-4 flex flex-col gap-4", className)}>
+      <TimelineForm onChange={setFormData} />
+      <TimelineViewport {...formData} />
     </div>
   );
 };
